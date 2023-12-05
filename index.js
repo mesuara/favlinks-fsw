@@ -1,18 +1,19 @@
-const express = require("express")
+const express = require('express')
+
+const path = require('path')
 
 const app = express()
 
-const port = 3000
+const PORT = 3000
 
+const clientPath = path.resolve(__dirname, "../client/dist")
+
+app.use(express.static(clientPath))
 
 app.get('/', (req, res) => {
-  res.send("Hello World! We're live on our first server!")
+    res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'))
 })
 
-app.listen(port, () => {
-  console.log(`Our app is listening on port ${port}`)
-})
-
-app.get('/test', (req, res) => {
-  res.send('<html> <body> <h1> Testing Sending HTML </h1> </body> </html>')
+app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`)
 })
