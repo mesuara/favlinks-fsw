@@ -1,6 +1,6 @@
 import Table from './Table'
 import Form from './Form'
-import {useState} from 'react'
+import { useState, useEffect } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -22,6 +22,43 @@ function LinkContainer(){
         //    console.log(favLink)
         // console.log(favLinks)
       }
+      const getLinks = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/linksgi')
+            const data = await response.json()
+            setFavLinks(data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const addLink = async (favLink) => {
+        try {
+            await fetch('http://localhost:3000/api/links', {
+                method: 'POST',
+                body: JSON.stringify(favLink),
+                headers: { "Content-type": "application/json" }
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const deleteLink = async (id) => {
+        try {
+            await fetch(`http://localhost:3000/api/links${id}`, {
+                method: 'DELETE',
+                body: JSON.stringify({ id }),
+                headers: { "Content-type": "application/json" }
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getLinks()
+    }, [])
 
     return(
         <Container>
